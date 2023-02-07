@@ -8,6 +8,9 @@ const condition = document.querySelector('.condition');
 const img = document.querySelector('img');
 const place = document.querySelector('.place');
 
+const windDeg = document.querySelector('.wind-direction');
+const windSpeed = document.querySelector('.wind-speed');
+
 interface Weather {
 	condition: string;
 	icon: string;
@@ -17,6 +20,8 @@ interface Weather {
 	tempMin: number;
 	feelsLike: number;
 	humidity: number;
+	windDeg: number;
+	windSpeed: number;
 }
 
 let weather: Weather;
@@ -24,7 +29,7 @@ let weather: Weather;
 async function getWeather() {
 	try {
 		const place = await fetch(
-			`http://api.openweathermap.org/geo/1.0/direct?q=${'Eureka'},${'CA'},${'US'}&appid=021c218898d176e59a1c863a9256aa3d
+			`http://api.openweathermap.org/geo/1.0/direct?q=${'Palmdale'},${'CA'},${'US'}&appid=021c218898d176e59a1c863a9256aa3d
         `,
 			{ mode: 'cors' }
 		);
@@ -55,13 +60,18 @@ async function processWeather() {
 		tempMin: weatherObject.main.temp_min,
 		feelsLike: weatherObject.main.feels_like,
 		humidity: weatherObject.main.humidity,
+		windDeg: weatherObject.wind.deg,
+		windSpeed: weatherObject.wind.speed,
 	};
-
-	console.log(weather);
 }
 
 function roundToString(num: number) {
 	return Math.round(num).toString();
+}
+
+function convertWindDirection(degree: number) {
+	let direction = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
+	return direction[Math.round((degree % 360) / 45)];
 }
 
 async function updateTemp() {
@@ -76,10 +86,16 @@ async function updateWeather() {
 	if (place) place.textContent = weather.place;
 }
 
+async function updateWind() {
+	if (windDeg) windDeg.textContent = convertWindDirection(weather.windDeg);
+	if (windSpeed) windSpeed.textContent = `${roundToString(weather.windSpeed)} mph`;
+}
+
 async function updateDOM() {
 	await processWeather();
 	updateTemp();
 	updateWeather();
+	updateWind();
 }
 
 updateDOM();
