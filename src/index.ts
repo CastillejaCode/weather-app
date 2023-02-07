@@ -4,7 +4,7 @@ const tempMain = document.querySelector('.main');
 const tempMax = document.querySelector('.max');
 const tempMin = document.querySelector('.min');
 
-const condition = document.querySelector('.condition');
+const condition = document.querySelector('.outside > .condition');
 const img = document.querySelector('img');
 const place = document.querySelector('.place');
 
@@ -47,16 +47,24 @@ async function getWeather() {
 		[lat, lon] = [placeParsed[0].lat, placeParsed[0].lon];
 
 		const aqi = await fetch(
-			`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`
+			`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
+			{ mode: 'cors' }
 		);
 		const aqiParsed = await aqi.json();
 
+		const forecast = await fetch(
+			`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
+			{ mode: 'cors' }
+		);
+		const forecastParsed = await forecast.json();
+
 		const weatherAPI = await fetch(
-			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=021c218898d176e59a1c863a9256aa3d`
+			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=021c218898d176e59a1c863a9256aa3d`,
+			{ mode: 'cors' }
 		);
 		const weatherParsed = await weatherAPI.json();
 
-		return [weatherParsed, aqiParsed];
+		return [weatherParsed, aqiParsed, forecastParsed];
 	} catch (err) {
 		console.log(err);
 	}
@@ -67,6 +75,7 @@ async function processWeather() {
 	if (array) {
 		const weatherObject = array[0];
 		const aqiObject = array[1];
+		const forecastObject = array[2];
 		weather = {
 			condition: weatherObject.weather[0].main,
 			icon: weatherObject.weather[0].icon,
@@ -81,6 +90,7 @@ async function processWeather() {
 			windSpeed: weatherObject.wind.speed,
 			aqi: aqiObject.list[0].main.aqi,
 		};
+		console.log(forecastObject);
 	}
 	console.log(weather);
 }
@@ -115,6 +125,7 @@ async function updateWeather() {
 	if (place) place.textContent = weather.place;
 }
 
+//////// Secondary Weather Results /////////
 async function updateWind() {
 	if (windDeg) windDeg.textContent = convertWindDirection(weather.windDeg);
 	if (windSpeed) windSpeed.textContent = `${roundToString(weather.windSpeed)} mph`;
@@ -132,10 +143,12 @@ async function updatePressure() {
 	if (pressure) pressure.textContent = `${weather.pressure}`;
 }
 
+/// Combine Secondary Results//////
 async function updateSecondaryWeather() {
 	Promise.all([updateWind(), updateAQI(), updateHumidity(), updatePressure()]);
 }
 
+// Update everything //
 async function updateDOM() {
 	await processWeather();
 	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather()]);

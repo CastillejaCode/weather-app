@@ -8,45 +8,53 @@
 		<script defer src="bundle.js"></script>
 		<title>Weather</title>
 	</head>
-	<body class="flex h-screen flex-col bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
-		<header class="m-2 flex justify-center">
+	<body class="h-screen bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
+		<!-- <header class="m-2 flex justify-center">
 			<input class="rounded-md bg-gray-100" type="text" placeholder="Location" />
-		</header>
-		<main class="grid h-screen w-screen grid-rows-6 gap-3">
-			<div class="weather row-span-2 grid grid-cols-2 text-sky-100 ">
-				<div class="outside col-auto grid grid-rows-5">
+		</header> -->
+		<main class="flex h-screen flex-col">
+			<div class="weather m-2 flex gap-2 text-gray-200">
+				<div class="outside grid flex-1 grid-rows-5 rounded-lg bg-gray-700 p-2">
 					<div class="condition grid place-content-center text-2xl"><p>Clear</p></div>
 					<div class="row-span-3 grid place-content-center">
 						<img src="#" alt="Weather Condition Icon" />
 					</div>
 					<div class="place text grid place-content-center text-3xl"><p>Palmdale</p></div>
 				</div>
-				<div class="temp grid grid-rows-5">
-					<div class=" flex items-center justify-end pr-2 text-3xl"><p class="max"></p></div>
+				<div class="temp grid flex-1 grid-rows-5 rounded-lg bg-gray-700 p-2">
+					<div class="flex items-center justify-end text-3xl"><p class="max"></p></div>
 					<div class="main row-span-3 grid place-content-center text-7xl">40</div>
-					<div class="min flex items-center justify-end pr-2 text-3xl">39</div>
+					<div class="min flex items-center justify-end text-3xl">39</div>
 				</div>
 			</div>
-			<div class="weather-secondary grid grid-flow-col text-gray-800">
-				<div class="wind-container flex flex-col items-center justify-center">
-					<i class="fa-solid fa-wind flex-1 text-3xl"></i>
-					<h1 class="wind-direction text-2xl">N</h1>
+			<div class="weather-secondary mx-2 grid grid-flow-col rounded-lg bg-gray-700 text-gray-200">
+				<div class="wind-container flex h-fit flex-col items-center justify-center p-2">
+					<i class="fa-solid fa-wind mb-1 flex-1 text-3xl"></i>
+					<h1 class="wind-direction text-lg">N</h1>
 					<h2 class="wind-speed text-xl">4 mph</h2>
 				</div>
-				<div class="aqi-container flex flex-col items-center justify-center">
+				<div class="aqi-container flex flex-col items-center justify-center p-2">
 					<i class="fa-solid fa-mask-face flex-1 text-3xl"></i>
-					<h1 class="aqi" >123</h1>
+					<h1 class="aqi text-xl">123</h1>
 				</div>
-				<div class="humidity-container flex flex-col items-center justify-center">
-					<i class="fa-solid fa-droplet flex-1 text-3xl"></i></i>
-					<h1 class="humidity">24</h1>
+				<div class="humidity-container flex flex-col items-center justify-center p-2">
+					<i class="fa-solid fa-droplet flex-1 text-3xl"></i>
+					<h1 class="humidity text-xl">24</h1>
 				</div>
-				<div class="pressure-container flex flex-col items-center justify-center">
+				<div class="pressure-container flex flex-col items-center justify-center p-2">
 					<i class="fa-solid fa-temperature-three-quarters flex-1 text-3xl"></i>
-					<h1 class="pressure">1231</h1>
+					<h1 class="pressure text-xl">1231</h1>
 				</div>
 			</div>
-			<div class="forecast"></div>
+			<div class="forecast mx-2 grid grid-flow-col rounded-lg bg-gray-700 text-gray-200">
+				<div class="day1">
+					<div class="condition"></div>
+					<div class="icon"></div>
+					<div class="temp"></div>
+				</div>
+				<div class="day2"></div>
+				<div class="day3"></div>
+			</div>
 		</main>
 	</body>
 </html>
