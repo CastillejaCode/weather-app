@@ -8,21 +8,29 @@
 		<script defer src="bundle.js"></script>
 		<title>Weather</title>
 	</head>
-	<body class="flex h-screen bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
+	<body class="flex h-screen flex-col bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
+		<header class="m-2 flex justify-center">
+			<input class="rounded-md bg-gray-100" type="text" placeholder="Location" />
+		</header>
 		<main class="grid h-screen w-screen grid-rows-6">
-			<div class="weather row-span-2 grid grid-cols-2">
-				<div class="outside flex flex-col">
-					<i class="fa-solid fa-sun fa-3xl"></i>
-					<h3>Clear</h3>
+			<div class="weather row-span-2 grid grid-cols-2 text-sky-100">
+				<div class="outside col-auto grid grid-rows-5">
+					<div class="condition grid place-content-center text-2xl"><p>Clear</p></div>
+					<div class="row-span-3 grid place-content-center">
+						<img src="#" alt="Weather Condition Icon" />
+					</div>
+					<div class="place text grid place-content-center text-3xl"><p>Palmdale</p></div>
 				</div>
-				<div class="temp grid grid-rows-5 text-sky-100">
+				<div class="temp grid grid-rows-5">
 					<div class="max flex items-center justify-end pr-2 text-3xl">58</div>
 					<div class="main row-span-3 grid place-content-center text-7xl">40</div>
 					<div class="min flex items-center justify-end pr-2 text-3xl">39</div>
 				</div>
 			</div>
-			<div class="weather-secondary"></div>
-			<div class="forecas"></div>
+			<div class="weather-secondary">
+				<div class=""></div>
+			</div>
+			<div class="forecast"></div>
 		</main>
 	</body>
 </html>
