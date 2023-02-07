@@ -4,11 +4,25 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://kit.fontawesome.com/3c56c7d658.js" crossorigin="anonymous"></script>
 		<script defer src="bundle.js"></script>
-		<title>Document</title>
+		<title>Weather</title>
 	</head>
-	<body>
-		<p class="mt-2 flex bg-slate-500">poop</p>
-		<p>bigpoop</p>
+	<body class="flex h-screen bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
+		<main class="grid h-screen w-screen grid-rows-6">
+			<div class="weather row-span-2 grid grid-cols-2">
+				<div class="outside flex flex-col">
+					<i class="fa-solid fa-sun fa-3xl"></i>
+					<h3>Clear</h3>
+				</div>
+				<div class="temp grid grid-rows-5 text-sky-100">
+					<div class="max flex items-center justify-end pr-2 text-3xl">58</div>
+					<div class="main row-span-3 grid place-content-center text-7xl">40</div>
+					<div class="min flex items-center justify-end pr-2 text-3xl">39</div>
+				</div>
+			</div>
+			<div class="weather-secondary"></div>
+			<div class="forecas"></div>
+		</main>
 	</body>
 </html>
