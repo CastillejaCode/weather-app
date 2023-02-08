@@ -29,11 +29,12 @@ const tempMaxF3 = document.querySelector('.day3 > .max');
 const tempMinF3 = document.querySelector('.day3 > .min');
 const day3 = document.querySelector('.day3 > .day');
 
-const buttonLocation = document.querySelector('button');
+const buttonLocation = document.querySelector('.add-location');
 const formLocation = document.querySelector('form');
 const cityInput = document.querySelector('#city') as HTMLInputElement;
 const stateInput = document.querySelector('#state') as HTMLInputElement;
 const countryInput = document.querySelector('#country') as HTMLInputElement;
+const buttonExit = document.querySelector('.exit');
 
 interface Weather {
 	condition: string;
@@ -221,9 +222,16 @@ async function updateForecast() {
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
 	await processWeather(city, state, country);
 	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+	formLocation?.classList.add('-translate-x-[100vw]');
 }
 
-// updateDOM();
+buttonLocation?.addEventListener('click', () => {
+	formLocation?.classList.remove('-translate-x-[100vw]');
+});
+
+buttonExit?.addEventListener('click', () => {
+	formLocation?.classList.add('-translate-x-[100vw]');
+});
 
 formLocation?.addEventListener('submit', (e) => {
 	e.preventDefault();
