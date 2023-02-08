@@ -53,7 +53,7 @@ async function getWeather() {
 		const aqiParsed = await aqi.json();
 
 		const forecast = await fetch(
-			`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
+			`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&current_weather=true&temperature_unit=fahrenheit&timeformat=unixtime&timezone=America%2FLos_Angeles`,
 			{ mode: 'cors' }
 		);
 		const forecastParsed = await forecast.json();
@@ -81,8 +81,8 @@ async function processWeather() {
 			icon: weatherObject.weather[0].icon,
 			place: weatherObject.name,
 			temp: weatherObject.main.temp,
-			tempMax: weatherObject.main.temp_max,
-			tempMin: weatherObject.main.temp_min,
+			tempMax: forecastObject.daily.temperature_2m_max[0],
+			tempMin: forecastObject.daily.temperature_2m_min[0],
 			feelsLike: weatherObject.main.feels_like,
 			humidity: weatherObject.main.humidity,
 			pressure: weatherObject.main.pressure,
