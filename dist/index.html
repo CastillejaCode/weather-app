@@ -12,41 +12,43 @@
 		<!-- <header class="m-2 flex justify-center">
 			<input class="rounded-md bg-gray-100" type="text" placeholder="Location" />
 		</header> -->
-		<main class="mb-4 flex flex-col">
+		<main class="relative mb-4 flex flex-col">
 			<div class="weather m-2 flex gap-2 text-gray-200">
-				<div class="outside grid flex-1 grid-rows-5 rounded-lg bg-gray-700 p-2">
+				<div class="outside flex flex-1 grid-rows-5 flex-col justify-between overflow-clip rounded-lg bg-gray-700 p-3">
 					<div class="condition grid place-content-center text-2xl"><p>Clear</p></div>
 					<div class="row-span-3 grid place-content-center">
 						<img src="#" alt="Weather Condition Icon" />
 					</div>
 					<div class="place text grid place-content-center text-3xl"><p>Palmdale</p></div>
 				</div>
-				<div class="temp grid flex-1 grid-rows-5 rounded-lg bg-gray-700 p-2">
-					<div class="flex items-center justify-end text-3xl"><p class="max"></p></div>
+				<div class="temp flex flex-1 flex-col justify-between gap-4 rounded-lg bg-gray-700 p-3">
+					<div class="flex items-center justify-end text-3xl">
+						<p class="max">23</p>
+					</div>
 					<div class="main row-span-3 grid place-content-center text-7xl">40</div>
 					<div class="min flex items-center justify-end text-3xl">39</div>
 				</div>
 			</div>
 			<div class="weather-secondary mx-2 mb-2 grid grid-flow-col rounded-lg bg-gray-700 text-gray-200">
-				<div class="wind-container flex h-fit flex-col items-center justify-center p-2">
+				<div class="wind-container flex h-fit flex-col items-center justify-center p-3">
 					<i class="fa-solid fa-wind mb-1 flex-1 text-3xl"></i>
 					<h1 class="wind-direction text-lg">N</h1>
 					<h2 class="wind-speed text-xl">4 mph</h2>
 				</div>
-				<div class="aqi-container flex flex-col items-center justify-center p-2">
+				<div class="aqi-container flex flex-col items-center justify-center p-3">
 					<i class="fa-solid fa-mask-face flex-1 text-3xl"></i>
 					<h1 class="aqi text-xl">123</h1>
 				</div>
-				<div class="humidity-container flex flex-col items-center justify-center p-2">
+				<div class="humidity-container flex flex-col items-center justify-center p-3">
 					<i class="fa-solid fa-droplet flex-1 text-3xl"></i>
 					<h1 class="humidity pl-2 text-xl">24</h1>
 				</div>
-				<div class="pressure-container flex flex-col items-center justify-center p-2">
+				<div class="pressure-container flex flex-col items-center justify-center p-3">
 					<i class="fa-solid fa-temperature-three-quarters flex-1 text-3xl"></i>
 					<h1 class="pressure text-xl">1231</h1>
 				</div>
 			</div>
-			<div class="forecast relative mx-2 grid grid-flow-col rounded-lg bg-gray-700 p-2 text-gray-200">
+			<div class="forecast relative mx-2 grid grid-flow-col rounded-lg bg-gray-700 p-3 text-gray-200">
 				<div class="day1 flex flex-col items-center">
 					<h1 class="day mb-3 border-b-2 border-gray-200 text-xl">Thu</h1>
 					<div class="max text-2xl font-bold">67</div>
@@ -68,6 +70,39 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 			</div>
+			<div
+				class="loading-screen ransition-transform absolute grid h-full w-full -translate-x-[100vw] place-content-center self-center rounded-lg bg-gray-900/95 duration-300"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="">
+					<g class="segment fill-gray-200 opacity-0">
+						<path
+							id="loading-path"
+							d="M 94 25 C 94 21.686 96.686 19 100 19 L 100 19 C 103.314 19 106 21.686 106 25 L 106 50 C 106 53.314 103.314 56 100 56 L 100 56 C 96.686 56 94 53.314 94 50 Z"
+						></path>
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(45deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(90deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(135deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(180deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(225deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(270deg); transform-origin: 100px 100px" />
+					</g>
+					<g class="segment fill-gray-200 opacity-0">
+						<use href="#loading-path" style="transform: rotate(315deg); transform-origin: 100px 100px" />
+					</g>
+				</svg>
+			</div>
 		</main>
 
 		<form
@@ -79,7 +114,7 @@
 			<i class="exit fa-solid fa-x absolute right-3 top-2 text-xl text-gray-200"></i>
 			<input class="w-1/2 rounded-lg text-lg" type="text" id="city" placeholder="City" required />
 			<input class="w-1/2 rounded-lg text-lg" type="text" name="state" id="state" placeholder="State" />
-			<input class="w-1/2 rounded-lg text-lg" type="text" name="country" id="country" placeholder="Country" />
+			<input class="mb-2 w-1/2 rounded-lg text-lg" type="text" name="country" id="country" placeholder="Country" />
 			<button class="rounded-lg border-2 border-gray-200 px-2 text-lg text-gray-200" type="submit" form="location">
 				Submit
 			</button>

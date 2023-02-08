@@ -1,6 +1,29 @@
 import './style.css';
 import format from 'date-fns/format';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import { animate, stagger } from 'motion';
+
+const numSegments = document.querySelectorAll('.segment').length;
+
+/**
+ * Stagger offset (in seconds)
+ * Decrease this to speed the animation up or increase
+ * to slow it down.
+ */
+const offset = 0.09;
+
+setTimeout(() => {
+	animate(
+		'.segment',
+		{ opacity: [0, 1, 0] },
+		{
+			offset: [0, 0.1, 1],
+			duration: numSegments * offset,
+			delay: stagger(offset),
+			repeat: Infinity,
+		}
+	);
+}, 1000);
 
 const tempMain = document.querySelector('.main');
 const tempMax = document.querySelector('.max');
@@ -35,6 +58,8 @@ const cityInput = document.querySelector('#city') as HTMLInputElement;
 const stateInput = document.querySelector('#state') as HTMLInputElement;
 const countryInput = document.querySelector('#country') as HTMLInputElement;
 const buttonExit = document.querySelector('.exit');
+
+const loadingScreen = document.querySelector('.loading-screen');
 
 interface Weather {
 	condition: string;
@@ -220,8 +245,10 @@ async function updateForecast() {
 
 // Update everything //
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
+	loadingScreen?.classList.remove('-translate-x-[100vw]');
 	await processWeather(city, state, country);
-	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+	await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+	loadingScreen?.classList.add('-translate-x-[100vw]');
 	formLocation?.classList.add('-translate-x-[100vw]');
 }
 
