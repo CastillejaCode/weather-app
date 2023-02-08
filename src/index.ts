@@ -29,6 +29,12 @@ const tempMaxF3 = document.querySelector('.day3 > .max');
 const tempMinF3 = document.querySelector('.day3 > .min');
 const day3 = document.querySelector('.day3 > .day');
 
+const buttonLocation = document.querySelector('button');
+const formLocation = document.querySelector('form');
+const cityInput = document.querySelector('#city') as HTMLInputElement;
+const stateInput = document.querySelector('#state') as HTMLInputElement;
+const countryInput = document.querySelector('#country') as HTMLInputElement;
+
 interface Weather {
 	condition: string;
 	icon: string;
@@ -67,10 +73,10 @@ interface Forecast {
 let weather: Weather;
 let forecast: Forecast;
 
-async function getWeather() {
+async function getWeather(city: string, state: string = 'CA', country: string = 'US') {
 	try {
 		const place = await fetch(
-			`http://api.openweathermap.org/geo/1.0/direct?q=${'Palmdale'},${'CA'},${'US'}&appid=021c218898d176e59a1c863a9256aa3d
+			`http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&appid=021c218898d176e59a1c863a9256aa3d
         `,
 			{ mode: 'cors' }
 		);
@@ -104,8 +110,8 @@ async function getWeather() {
 	}
 }
 
-async function processWeather() {
-	const array = await getWeather();
+async function processWeather(city: string, state: string = 'CA', country: string = 'US') {
+	const array = await getWeather(city, state, country);
 	if (array) {
 		const weatherObject = array[0];
 		const aqiObject = array[1];
@@ -212,9 +218,15 @@ async function updateForecast() {
 }
 
 // Update everything //
-async function updateDOM() {
-	await processWeather();
+async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
+	await processWeather(city, state, country);
 	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
 }
 
-updateDOM();
+// updateDOM();
+
+formLocation?.addEventListener('submit', (e) => {
+	e.preventDefault();
+	updateDOM(cityInput.value, stateInput.value, countryInput.value);
+	formLocation.reset();
+});

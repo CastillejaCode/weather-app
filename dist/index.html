@@ -8,11 +8,11 @@
 		<script defer src="bundle.js"></script>
 		<title>Weather</title>
 	</head>
-	<body class="h-screen bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
+	<body class="flex h-screen flex-col bg-gradient-to-t from-blue-100 via-blue-300 to-blue-500">
 		<!-- <header class="m-2 flex justify-center">
 			<input class="rounded-md bg-gray-100" type="text" placeholder="Location" />
 		</header> -->
-		<main class="flex h-screen flex-col">
+		<main class="mb-4 flex flex-col">
 			<div class="weather m-2 flex gap-2 text-gray-200">
 				<div class="outside grid flex-1 grid-rows-5 rounded-lg bg-gray-700 p-2">
 					<div class="condition grid place-content-center text-2xl"><p>Clear</p></div>
@@ -39,7 +39,7 @@
 				</div>
 				<div class="humidity-container flex flex-col items-center justify-center p-2">
 					<i class="fa-solid fa-droplet flex-1 text-3xl"></i>
-					<h1 class="humidity text-xl">24</h1>
+					<h1 class="humidity pl-2 text-xl">24</h1>
 				</div>
 				<div class="pressure-container flex flex-col items-center justify-center p-2">
 					<i class="fa-solid fa-temperature-three-quarters flex-1 text-3xl"></i>
@@ -64,5 +64,21 @@
 				</div>
 			</div>
 		</main>
+		<button class="add-location invisible h-14 w-14 self-center rounded-full bg-gray-600 text-2xl text-gray-200">
+			<i class="fa-solid fa-magnifying-glass"></i>
+		</button>
+		<form
+			action=""
+			class="pb- mx-2 flex h-fit w-3/4 flex-col items-center gap-4 self-center rounded-lg bg-gray-700 pt-6 pb-4"
+			id="location"
+			onclick=""
+		>
+			<input class="w-1/2 rounded-lg text-lg" type="text" id="city" placeholder="City" required />
+			<input class="w-1/2 rounded-lg text-lg" type="text" name="state" id="state" placeholder="State" />
+			<input class="w-1/2 rounded-lg text-lg" type="text" name="country" id="country" placeholder="Country" />
+			<button class="rounded-lg border-2 border-gray-200 px-2 text-lg text-gray-200" type="submit" form="location">
+				Submit
+			</button>
+		</form>
 	</body>
 </html>
