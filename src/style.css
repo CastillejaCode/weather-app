@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* div {
-	border: solid red 1px;
-} */
+.night {
+	background-image: grayscale(50%);
+}

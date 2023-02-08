@@ -154,6 +154,7 @@ async function processWeather(city: string, state: string = 'CA', country: strin
 	}
 }
 
+// Helper Functions //
 function roundToString(num: number) {
 	return Math.round(num).toString();
 }
@@ -172,6 +173,7 @@ function convertAQIToString(index: number) {
 	else return null;
 }
 
+// Weather Async function //
 async function updateTemp() {
 	if (tempMain) tempMain.textContent = roundToString(weather.temp);
 	if (tempMax) tempMax.textContent = roundToString(weather.tempMax);
@@ -225,17 +227,41 @@ async function updateForecast() {
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
 	insertLoading(true);
 	loadingScreen?.classList.remove('-translate-x-[100vw]');
-
-	await processWeather(city, state, country);
-	await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+	try {
+		await processWeather(city, state, country);
+		await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+	} catch (err) {
+		console.log(err);
+	}
 
 	loadingScreen?.classList.add('-translate-x-[100vw]');
 	formLocation?.classList.add('-translate-x-[100vw]');
+	// if (weather.icon.includes('n')) {
+	// 	document.querySelector('body')?.classList.add('night');
+	// } else document.querySelector('body')?.classList.remove('night');
 	setTimeout(() => {
 		insertLoading(false);
 	}, 500);
 }
 
+// DOM //
+
+buttonLocation?.addEventListener('click', () => {
+	formLocation?.classList.remove('-translate-x-[100vw]');
+	cityInput.focus();
+});
+
+buttonExit?.addEventListener('click', () => {
+	formLocation?.classList.add('-translate-x-[100vw]');
+});
+
+formLocation?.addEventListener('submit', (e) => {
+	e.preventDefault();
+	updateDOM(cityInput.value, stateInput.value, countryInput.value);
+	formLocation.reset();
+});
+
+// Motion One Example Loading SVG //
 function insertLoading(condition: boolean) {
 	if (condition) {
 		loadingScreen?.insertAdjacentHTML(
@@ -293,20 +319,3 @@ function insertLoading(condition: boolean) {
 		);
 	} else loadingScreen?.querySelector('svg')?.remove();
 }
-
-// DOM //
-
-buttonLocation?.addEventListener('click', () => {
-	formLocation?.classList.remove('-translate-x-[100vw]');
-	cityInput.focus();
-});
-
-buttonExit?.addEventListener('click', () => {
-	formLocation?.classList.add('-translate-x-[100vw]');
-});
-
-formLocation?.addEventListener('submit', (e) => {
-	e.preventDefault();
-	updateDOM(cityInput.value, stateInput.value, countryInput.value);
-	formLocation.reset();
-});
