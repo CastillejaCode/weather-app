@@ -1,4 +1,6 @@
 import './style.css';
+import format from 'date-fns/format';
+import fromUnixTime from 'date-fns/fromUnixTime';
 
 const tempMain = document.querySelector('.main');
 const tempMax = document.querySelector('.max');
@@ -17,6 +19,16 @@ const humidity = document.querySelector('.humidity');
 
 const pressure = document.querySelector('.pressure');
 
+const tempMaxF1 = document.querySelector('.day1 > .max');
+const tempMinF1 = document.querySelector('.day1 > .min');
+const day1 = document.querySelector('.day1 > .day');
+const tempMaxF2 = document.querySelector('.day2 > .max');
+const tempMinF2 = document.querySelector('.day2 > .min');
+const day2 = document.querySelector('.day2 > .day');
+const tempMaxF3 = document.querySelector('.day3 > .max');
+const tempMinF3 = document.querySelector('.day3 > .min');
+const day3 = document.querySelector('.day3 > .day');
+
 interface Weather {
 	condition: string;
 	icon: string;
@@ -32,7 +44,28 @@ interface Weather {
 	pressure: number;
 }
 
+interface Forecast {
+	day1: {
+		max: number;
+		min: number;
+		day: string;
+	};
+
+	day2: {
+		max: number;
+		min: number;
+		day: string;
+	};
+
+	day3: {
+		max: number;
+		min: number;
+		day: string;
+	};
+}
+
 let weather: Weather;
+let forecast: Forecast;
 
 async function getWeather() {
 	try {
@@ -64,6 +97,7 @@ async function getWeather() {
 		);
 		const weatherParsed = await weatherAPI.json();
 
+		console.log(forecastParsed);
 		return [weatherParsed, aqiParsed, forecastParsed];
 	} catch (err) {
 		console.log(err);
@@ -90,9 +124,24 @@ async function processWeather() {
 			windSpeed: weatherObject.wind.speed,
 			aqi: aqiObject.list[0].main.aqi,
 		};
-		console.log(forecastObject);
+		forecast = {
+			day1: {
+				max: forecastObject.daily.temperature_2m_max[1],
+				min: forecastObject.daily.temperature_2m_min[1],
+				day: format(fromUnixTime(forecastObject.daily.time[1]), 'eee'),
+			},
+			day2: {
+				max: forecastObject.daily.temperature_2m_max[2],
+				min: forecastObject.daily.temperature_2m_min[2],
+				day: format(fromUnixTime(forecastObject.daily.time[2]), 'eee'),
+			},
+			day3: {
+				max: forecastObject.daily.temperature_2m_max[3],
+				min: forecastObject.daily.temperature_2m_min[3],
+				day: format(fromUnixTime(forecastObject.daily.time[3]), 'eee'),
+			},
+		};
 	}
-	console.log(weather);
 }
 
 function roundToString(num: number) {
@@ -148,10 +197,24 @@ async function updateSecondaryWeather() {
 	Promise.all([updateWind(), updateAQI(), updateHumidity(), updatePressure()]);
 }
 
+async function updateForecast() {
+	if (tempMaxF1) tempMaxF1.textContent = roundToString(forecast.day1.max);
+	if (tempMinF1) tempMinF1.textContent = roundToString(forecast.day1.min);
+	if (day1) day1.textContent = forecast.day1.day;
+
+	if (tempMaxF2) tempMaxF2.textContent = roundToString(forecast.day2.max);
+	if (tempMinF2) tempMinF2.textContent = roundToString(forecast.day2.min);
+	if (day2) day2.textContent = forecast.day2.day;
+
+	if (tempMaxF3) tempMaxF3.textContent = roundToString(forecast.day3.max);
+	if (tempMinF3) tempMinF3.textContent = roundToString(forecast.day3.min);
+	if (day3) day3.textContent = forecast.day3.day;
+}
+
 // Update everything //
 async function updateDOM() {
 	await processWeather();
-	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather()]);
+	Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
 }
 
 updateDOM();
