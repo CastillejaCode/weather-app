@@ -38,6 +38,7 @@ const countryInput = document.querySelector('#country') as HTMLInputElement;
 const buttonExit = document.querySelector('.exit');
 
 const loadingScreen = document.querySelector('.loading-screen');
+const error = document.querySelector('.error');
 
 interface Weather {
 	condition: string;
@@ -93,6 +94,9 @@ async function getWeather(city: string, state: string = 'CA', country: string = 
 			`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
 			{ mode: 'cors' }
 		);
+
+		setLocalStorage(city, state, country);
+
 		const aqiParsed = await aqi.json();
 
 		const forecast = await fetch(
@@ -111,6 +115,12 @@ async function getWeather(city: string, state: string = 'CA', country: string = 
 		return [weatherParsed, aqiParsed, forecastParsed];
 	} catch (err) {
 		console.log(err);
+		if (error) {
+			error.textContent = `Please enter a real city`;
+			setTimeout(() => {
+				error.textContent = '';
+			}, 2000);
+		}
 	}
 }
 
@@ -230,10 +240,6 @@ function setLocalStorage(city: string, state: string, country: string) {
 	localStorage.setItem('country', `${country}`);
 }
 
-function getLocalStorage(city: string, state: string, country: string) {
-	localStorage.getItem('city');
-}
-
 // Update everything //
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
 	insertLoading(true);
@@ -241,7 +247,6 @@ async function updateDOM(city: string, state: string = 'CA', country: string = '
 	try {
 		await processWeather(city, state, country);
 		await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
-		setLocalStorage(city, state, country);
 	} catch (err) {
 		console.log(err);
 	}
