@@ -5,3 +5,8 @@
 .night {
 	background-image: grayscale(50%);
 }
+
+.segment {
+	opacity: 0;
+	fill: rgb(229 231 235);
+}

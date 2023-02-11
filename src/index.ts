@@ -223,6 +223,17 @@ async function updateForecast() {
 	if (day3) day3.textContent = forecast.day3.day;
 }
 
+// Local Storage //
+function setLocalStorage(city: string, state: string, country: string) {
+	localStorage.setItem('city', `${city}`);
+	localStorage.setItem('state', `${state}`);
+	localStorage.setItem('country', `${country}`);
+}
+
+function getLocalStorage(city: string, state: string, country: string) {
+	localStorage.getItem('city');
+}
+
 // Update everything //
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
 	insertLoading(true);
@@ -230,6 +241,7 @@ async function updateDOM(city: string, state: string = 'CA', country: string = '
 	try {
 		await processWeather(city, state, country);
 		await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
+		setLocalStorage(city, state, country);
 	} catch (err) {
 		console.log(err);
 	}
@@ -244,6 +256,17 @@ async function updateDOM(city: string, state: string = 'CA', country: string = '
 	}, 500);
 }
 
+function initializeDOM() {
+	const city = localStorage.getItem('city');
+	const state = localStorage.getItem('state');
+	const country = localStorage.getItem('country');
+	if (city && state && country) updateDOM(city, state, country);
+	else if (city && state) updateDOM(city, state);
+	else if (city) updateDOM(city);
+	else return;
+}
+
+initializeDOM();
 // DOM //
 
 buttonLocation?.addEventListener('click', () => {
@@ -268,31 +291,31 @@ function insertLoading(condition: boolean) {
 			'afterbegin',
 			`
 			<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<path
 							id="loading-path"
 							d="M 94 25 C 94 21.686 96.686 19 100 19 L 100 19 C 103.314 19 106 21.686 106 25 L 106 50 C 106 53.314 103.314 56 100 56 L 100 56 C 96.686 56 94 53.314 94 50 Z"
 						></path>
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(45deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(90deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(135deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(180deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(225deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(270deg); transform-origin: 100px 100px" />
 					</g>
-					<g class="segment fill-gray-200 opacity-0">
+					<g class="segment">
 						<use href="#loading-path" style="transform: rotate(315deg); transform-origin: 100px 100px" />
 					</g>
 				</svg>
@@ -319,3 +342,8 @@ function insertLoading(condition: boolean) {
 		);
 	} else loadingScreen?.querySelector('svg')?.remove();
 }
+
+// TODO: Local Storage
+// TODO: background change
+// ToDo: readme
+// Bug: Fix error when wind degree doesn't show
