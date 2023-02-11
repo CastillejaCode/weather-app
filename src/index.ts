@@ -246,14 +246,17 @@ async function updateDOM(city: string, state: string = 'CA', country: string = '
 		console.log(err);
 	}
 
-	loadingScreen?.classList.add('-translate-x-[100vw]');
-	formLocation?.classList.add('-translate-x-[100vw]');
+	img?.addEventListener('load', () => {
+		loadingScreen?.classList.add('-translate-x-[100vw]');
+		formLocation?.classList.add('-translate-x-[100vw]');
+		setTimeout(() => {
+			insertLoading(false);
+		}, 500);
+	});
+
 	// if (weather.icon.includes('n')) {
 	// 	document.querySelector('body')?.classList.add('night');
 	// } else document.querySelector('body')?.classList.remove('night');
-	setTimeout(() => {
-		insertLoading(false);
-	}, 500);
 }
 
 function initializeDOM() {
@@ -343,7 +346,6 @@ function insertLoading(condition: boolean) {
 	} else loadingScreen?.querySelector('svg')?.remove();
 }
 
-// TODO: Local Storage
 // TODO: background change
 // ToDo: readme
 // Bug: Fix error when wind degree doesn't show
