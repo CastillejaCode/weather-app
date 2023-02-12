@@ -84,7 +84,7 @@ async function getWeather(city: string, state: string = 'CA', country: string = 
 	try {
 		// Location
 		const place = await fetch(
-			`http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&appid=021c218898d176e59a1c863a9256aa3d
+			`https://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&appid=021c218898d176e59a1c863a9256aa3d
         `,
 			{ mode: 'cors' }
 		);
