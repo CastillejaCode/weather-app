@@ -360,5 +360,4 @@ function insertLoading(condition: boolean) {
 	} else loadingScreen?.querySelector('svg')?.remove();
 }
 
-// ToDo: readme
 // TODO: Favicon
