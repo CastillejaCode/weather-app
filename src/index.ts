@@ -3,6 +3,7 @@ import format from 'date-fns/format';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import { animate, stagger } from 'motion';
 
+// DOM Elements //
 const tempMain = document.querySelector('.main');
 const tempMax = document.querySelector('.max');
 const tempMin = document.querySelector('.min');
@@ -75,11 +76,13 @@ interface Forecast {
 	};
 }
 
+// Global fetched objects
 let weather: Weather;
 let forecast: Forecast;
 
 async function getWeather(city: string, state: string = 'CA', country: string = 'US') {
 	try {
+		// Location
 		const place = await fetch(
 			`http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&appid=021c218898d176e59a1c863a9256aa3d
         `,
@@ -90,28 +93,30 @@ async function getWeather(city: string, state: string = 'CA', country: string = 
 		let lat, lon;
 		[lat, lon] = [placeParsed[0].lat, placeParsed[0].lon];
 
+		// Set cooridnates to local storage
+		setLocalStorage(city, state, country);
+
+		// AQI information
 		const aqi = await fetch(
 			`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
 			{ mode: 'cors' }
 		);
-
-		setLocalStorage(city, state, country);
-
 		const aqiParsed = await aqi.json();
 
+		// forecast information
 		const forecast = await fetch(
 			`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&current_weather=true&temperature_unit=fahrenheit&timeformat=unixtime&timezone=America%2FLos_Angeles`,
 			{ mode: 'cors' }
 		);
 		const forecastParsed = await forecast.json();
 
+		// Main weather information
 		const weatherAPI = await fetch(
 			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=021c218898d176e59a1c863a9256aa3d`,
 			{ mode: 'cors' }
 		);
 		const weatherParsed = await weatherAPI.json();
 
-		console.log(forecastParsed);
 		return [weatherParsed, aqiParsed, forecastParsed];
 	} catch (err) {
 		console.log(err);
@@ -182,6 +187,7 @@ function convertAQIToString(index: number) {
 	if (index === 5) return 'Very Poor';
 	else return null;
 }
+//	Helper Functions //
 
 // Weather Async function //
 async function updateTemp() {
@@ -242,8 +248,10 @@ function setLocalStorage(city: string, state: string, country: string) {
 
 // Update everything //
 async function updateDOM(city: string, state: string = 'CA', country: string = 'US') {
+	// Loading screen
 	insertLoading(true);
 	loadingScreen?.classList.remove('-translate-x-[100vw]');
+
 	try {
 		await processWeather(city, state, country);
 		await Promise.all([updateTemp(), updateWeather(), updateSecondaryWeather(), updateForecast()]);
@@ -259,6 +267,8 @@ async function updateDOM(city: string, state: string = 'CA', country: string = '
 		}, 500);
 	});
 
+	// Potential changing background based on daytime/ nighttime
+
 	// if (weather.icon.includes('n')) {
 	// 	document.querySelector('body')?.classList.add('night');
 	// } else document.querySelector('body')?.classList.remove('night');
@@ -273,10 +283,9 @@ function initializeDOM() {
 	else if (city) updateDOM(city);
 	else return;
 }
-
 initializeDOM();
-// DOM //
 
+// DOM //
 buttonLocation?.addEventListener('click', () => {
 	formLocation?.classList.remove('-translate-x-[100vw]');
 	cityInput.focus();
@@ -351,6 +360,5 @@ function insertLoading(condition: boolean) {
 	} else loadingScreen?.querySelector('svg')?.remove();
 }
 
-// TODO: background change
 // ToDo: readme
-// Bug: Fix error when wind degree doesn't show
+// TODO: Favicon
