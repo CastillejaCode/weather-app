@@ -98,7 +98,7 @@ async function getWeather(city: string, state: string = 'CA', country: string = 
 
 		// AQI information
 		const aqi = await fetch(
-			`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
+			`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=021c218898d176e59a1c863a9256aa3d`,
 			{ mode: 'cors' }
 		);
 		const aqiParsed = await aqi.json();
